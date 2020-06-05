@@ -20,6 +20,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        etTitle = findViewById(R.id.etTitle);
+        etRemarks = findViewById(R.id.etRemarks);
+        rg = findViewById(R.id.rg);
 
       
 
