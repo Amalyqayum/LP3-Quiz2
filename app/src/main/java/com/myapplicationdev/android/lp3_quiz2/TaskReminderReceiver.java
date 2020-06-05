@@ -27,13 +27,25 @@ public class TaskReminderReceiver extends BroadcastReceiver {
 		NotificationManager notificationManager = (NotificationManager)
 				context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-			NotificationChannel channel = new
-					NotificationChannel("default","Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
+		if (impt.contentEquals("Important")) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				NotificationChannel channel = new
+						NotificationChannel("default", "Default Channel", NotificationManager.IMPORTANCE_HIGH);
 
-			channel.setDescription("This is for default notification");
-			notificationManager.createNotificationChannel(channel);
-		}
+				channel.setDescription("This is for default notification");
+				notificationManager.createNotificationChannel(channel);
+			}
+		} else {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				NotificationChannel channel = new
+						NotificationChannel("default", "Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
+
+				channel.setDescription("This is for default notification");
+				notificationManager.createNotificationChannel(channel);
+			}
+
+			}
+
 
 		if (impt.contentEquals("Important")) {
 			Intent i = new Intent(context, MainActivity.class);
