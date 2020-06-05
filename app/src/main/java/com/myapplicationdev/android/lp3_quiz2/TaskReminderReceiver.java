@@ -13,34 +13,55 @@ import androidx.core.app.NotificationCompat;
 
 public class TaskReminderReceiver extends BroadcastReceiver {
 
-    int notifReqCode = 123;
+	int reqCode = 12345;
 
 	@Override
-	public void onReceive(Context context, Intent i) {
+	public void onReceive(Context context, Intent intent) {
+		// TODO: This method is called when the BroadcastReceiver is receiving
+		// an Intent broadcast.
 
+		String impt = intent.getStringExtra("radiobutton");
+		String title = intent.getStringExtra("title");
+		String remark = intent.getStringExtra("remark");
 
 		NotificationManager notificationManager = (NotificationManager)
 				context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			NotificationChannel channel = new
+					NotificationChannel("default","Default Channel", NotificationManager.IMPORTANCE_DEFAULT);
 
-
-
+			channel.setDescription("This is for default notification");
+			notificationManager.createNotificationChannel(channel);
 		}
 
-		Intent intent = new Intent(context, MainActivity.class);
-		PendingIntent pIntent = PendingIntent.getActivity(context, notifReqCode,
-				intent, PendingIntent.FLAG_CANCEL_CURRENT);
+		if (impt.contentEquals("Important")) {
+			Intent i = new Intent(context, MainActivity.class);
+			PendingIntent pIntent = PendingIntent.getActivity(context, reqCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
+			//build notification
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
+			builder.setContentTitle(title);
+			builder.setContentText(remark);
+			builder.setSmallIcon(android.R.drawable.ic_dialog_alert);
+			builder.setContentIntent(pIntent);
+			builder.setAutoCancel(true);
 
-		// build notification
-		NotificationCompat.Builder builder;
+			Notification n = builder.build();
+			notificationManager.notify(123, n);
+		} else {
+			Intent i = new Intent(context, MainActivity.class);
+			PendingIntent pIntent = PendingIntent.getActivity(context, reqCode, i, PendingIntent.FLAG_CANCEL_CURRENT);
 
-		//this should be useful
-		android.R.drawable.ic_dialog_alert;
-		android.R.drawable.ic_dialog_info;
+			//build notification
+			NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "default");
+			builder.setContentTitle(title);
+			builder.setContentText(remark);
+			builder.setSmallIcon(android.R.drawable.ic_dialog_info);
+			builder.setContentIntent(pIntent);
+			builder.setAutoCancel(true);
 
-		Notification n = builder.build();
-		notificationManager.notify(notifReqCode, n);
+			Notification n = builder.build();
+			notificationManager.notify(123, n);
+		}
 	}
-
 }
